@@ -141,10 +141,21 @@ print("="*80)
 # GOOD: Title + description → "Login issue. User reports authentication 
 #       failure after password reset. Error code 401..."
 # -----------------------------------------------------------------------------
+
+# This short form below is called list comprehension. It does the same thing as this longer loop:
+# ticket_texts = []
+# for ticket in tickets:
+#     text = f"{ticket['title']}. {ticket['description']}"
+#     ticket_texts.append(text)
+
+# How it reads in plain English: 
+# “For each ticket in tickets, take its title, add . , add its description, and put the result in a list called ticket_texts.”
 ticket_texts = [
     f"{ticket['title']}. {ticket['description']}" 
     for ticket in tickets
 ]
+
+# print(ticket_texts[0])  # Show first ticket's text for verification
 
 # -----------------------------------------------------------------------------
 # Generate embeddings via OpenAI API
