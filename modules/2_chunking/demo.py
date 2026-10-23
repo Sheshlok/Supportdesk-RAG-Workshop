@@ -27,18 +27,35 @@ When do you need chunking?
 - You want to retrieve specific sections, not entire documents
 """
 
+# Import json because our support ticket dataset is in JSON format
 import json
+# Import os to access environment variables (like API keys) and file paths
 import os
+
+#import various LangChain modules for text splitting, embeddings, vector stores, and document abstraction
 from langchain_text_splitters import (  # Various splitting strategies
-    RecursiveCharacterTextSplitter,  # Best general-purpose splitter
-    CharacterTextSplitter,  # Simple split by character count
-    MarkdownHeaderTextSplitter,  # Splits based on markdown headers
-    HTMLHeaderTextSplitter  # Splits based on HTML tags
+    RecursiveCharacterTextSplitter,  # Best general-purpose splitter. Recursive Chunking
+    CharacterTextSplitter,  # Simple split by character count. Fixed size Chunking.
+    MarkdownHeaderTextSplitter,  # Splits based on markdown headers. Structure based Chunking
+    HTMLHeaderTextSplitter  # Splits based on HTML tags. Structure based Chunking
 )
+
+#
 from langchain_experimental.text_splitter import SemanticChunker  # AI-powered semantic chunking
+
+# From langchain community, import Chroma vector store for storing embeddings. 
+# Using a Langchain wrapper on top of ChromaDB for easier integration with LangChain
 from langchain_community.vectorstores import Chroma  # Vector database
+
+# From langchain_openai, get the OpenAIEmbeddings. 
+# OpenAI will sit and on top of that will be a LangChain wrapper to make it easier to use with LangChain. 
+# This is the embedding function that will convert text into vectors.
 from langchain_openai import OpenAIEmbeddings  # OpenAI embedding function
+
+# Anything and everything that we want to embed or chunk in the LangChain framework is represented as a Document object.
 from langchain_core.documents import Document  # Document abstraction
+
+# Load environment variables from .env file
 from dotenv import load_dotenv
 
 # ============================================================================
@@ -56,7 +73,7 @@ print("="*80)
 # These are relatively SHORT documents - good for demonstrating chunking concepts
 # In real scenarios, you'd chunk PDFs, articles, manuals (much longer!)
 with open('../../data/synthetic_tickets.json', 'r') as f:
-    tickets = json.load(f)
+    tickets = json.load(f) #tickets is a list of dictionaries, each representing a support ticket
 print(f"\nLoaded {len(tickets)} support tickets")
 
 # ============================================================================
@@ -103,7 +120,7 @@ Resolution: {ticket['resolution']}
             'priority': ticket['priority']       # For priority filtering
         }
     )
-    documents.append(doc)
+    documents.append(doc) #documents is a list of Document objects, each representing a support ticket
 
 print(f"Created {len(documents)} documents")
 print(f"\nSample document length: {len(documents[0].page_content)} characters")
@@ -133,7 +150,9 @@ fixed_splitter = CharacterTextSplitter(
     chunk_overlap=20,    # Characters to repeat between chunks (10% overlap)
     separator="\n"       # Prefer splitting on newlines when possible
 )
-fixed_chunks = fixed_splitter.split_documents(documents)
+
+# fixed_chunks is a list of Document objects, each representing a chunk of the original documents
+fixed_chunks = fixed_splitter.split_documents(documents) 
 
 print(f"✓ Created {len(fixed_chunks)} chunks")
 print(f"  Chunk size: 200 chars, Overlap: 20 chars")
@@ -231,6 +250,8 @@ semantic_splitter = SemanticChunker(
 )
 
 demo_doc = Document(page_content=demo_paragraph.strip())
+
+# semantic_chunks is a list of Document objects, each representing a semantically coherent chunk of the original document
 semantic_chunks = semantic_splitter.split_documents([demo_doc])
 print(f"\n✓ Created {len(semantic_chunks)} chunks")
 print("  Note: Semantic chunking results vary based on embedding model and threshold settings")
