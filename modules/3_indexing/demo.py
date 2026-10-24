@@ -47,11 +47,18 @@ from dotenv import load_dotenv
 
 # LlamaIndex core components
 from llama_index.core import (
+    # Nothing but a vectorDB
     VectorStoreIndex,    # Standard embedding-based index
+    # we will talk about what this is
     SummaryIndex,        # Full document storage, LLM-based relevance
+    # it will literally create a tree of summaries
     TreeIndex,           # Hierarchical summarization tree
+    # Extract keywords out of your docs and keywords out of your query using LLMs and match them.
     KeywordTableIndex,   # Inverted keyword index
+    # Just like LangChain, LlamaIndex has a Document class that wraps text and metadata together.
+    # Anything that you create objects of type Document, you can index and retrieve.
     Document,            # Document wrapper with text + metadata
+    # Set global params, global LLM and global embedding model for all indexes
     Settings             # Global configuration
 )
 from llama_index.embeddings.openai import OpenAIEmbedding
@@ -110,7 +117,7 @@ print("Loading Support Tickets")
 print("="*80)
 
 with open('../../data/synthetic_tickets.json', 'r', encoding='utf-8') as f:
-    tickets = json.load(f)
+    tickets = json.load(f) # tickets is a list of dictionaries, each representing a support ticket
 
 # -----------------------------------------------------------------------------
 # Convert to LlamaIndex Documents
@@ -140,6 +147,7 @@ Priority: {ticket['priority']}"""
             'title': ticket['title']
         }
     )
+    # documents is a list of Document objects, each representing a support ticket
     documents.append(doc)
 
 print(f"✓ Loaded {len(documents)} support tickets")
@@ -474,6 +482,7 @@ tree_response = tree_query_engine.query(query)
 print("\nTree Index Results:")
 print(f"Answer: {tree_response.response}\n")
 print("Source Documents:")
+print(f"Tree returned {len(tree_response.source_nodes)} source nodes")
 for i, node in enumerate(tree_response.source_nodes[:3], 1):
     print(f"\n{i}. {node.metadata.get('ticket_id', 'Unknown')}")
     print(f"   {node.text[:150]}...")
@@ -568,6 +577,7 @@ print(f"\nQuery: '{query}'")
 # 2. Look up documents in inverted index
 # 3. Return documents containing query keywords
 # 4. Synthesize answer from matched documents
+#keyword_response is a response object containing the answer and source documents
 keyword_response = keyword_query_engine.query(query)
 
 print("\nKeyword Index Results:")
@@ -635,6 +645,7 @@ print(f"\nQuery: '{query}'")
 # Finds semantically similar documents
 # "auth issues" → finds "login problems", "SSO failures", etc.
 # -----------------------------------------------------------------------------
+# vector_nodes is a list of Document nodes returned by the vector index retriever
 vector_nodes = vector_index.as_retriever(similarity_top_k=5).retrieve(query)
 
 # -----------------------------------------------------------------------------
@@ -644,6 +655,7 @@ vector_nodes = vector_index.as_retriever(similarity_top_k=5).retrieve(query)
 # "authentication" → finds docs containing that word
 # Great for: ticket IDs, error codes, product names
 # -----------------------------------------------------------------------------
+# keyword_nodes is a list of Document nodes returned by the keyword index retriever
 keyword_nodes = keyword_index.as_retriever().retrieve(query)
 
 # -----------------------------------------------------------------------------
