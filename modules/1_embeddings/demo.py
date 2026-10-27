@@ -92,6 +92,7 @@ print(f"Embedding dimension: {embedding_dim}")
 # =============================================================================
 print("\nLoading support tickets...")
 with open('../../data/synthetic_tickets.json', 'r') as f:
+    # tickets is a list of dictionaries, each representing a support ticket
     tickets = json.load(f)
 print(f"Loaded {len(tickets)} support tickets")
 
@@ -171,6 +172,15 @@ response = client.embeddings.create(input=ticket_texts, model=embedding_model)
 
 # Convert API response to NumPy array for mathematical operations
 # Shape: (num_tickets, 1536) - each row is one ticket's embedding
+
+#-----------------------------------------------------------------------------
+# Inspect the embeddings
+#-----------------------------------------------------------------------------  
+print(f"✓ Received {len(response.data)} embeddings from OpenAI API")
+print(f"  Each embedding has {len(response.data[0].embedding)} dimensions")
+print(f"  Total embeddings shape: ({len(response.data)}, {len(response.data[0].embedding)})")
+print(response.data[0].embedding[:10])  # Show first 10 values of first embedding for inspection
+
 embeddings = np.array([data.embedding for data in response.data])
 print(f"✓ Generated embeddings with shape: {embeddings.shape}")
 print(f"  ({len(tickets)} tickets × {embedding_dim} dimensions)")

@@ -483,6 +483,7 @@ Context:
         the question into a standalone query so the retriever finds the
         right documents (e.g. "that ticket" → "TICK-001").
         """
+        print("\nhistory size:", len(history))
         if not history:
             # First turn: no history to condense, retrieve directly
             standalone = question
