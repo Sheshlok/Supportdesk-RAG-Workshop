@@ -263,7 +263,9 @@ for i, chunk in enumerate(semantic_chunks):
     print(f"\n  Chunk {i+1} ({len(chunk.page_content)} chars):")
     print("  " + "~"*60)
     # Show full content for clarity
+    # .strip().split('\n'): removes surrounding whitespace, then breaks the chunks into lines
     for line in chunk.page_content.strip().split('\n'):
+        # skips empty lines
         if line.strip():
             print(f"    {line.strip()}")
     print("  " + "~"*60)
