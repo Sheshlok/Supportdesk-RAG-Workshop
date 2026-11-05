@@ -22,7 +22,7 @@ import os
 import time
 from operator import itemgetter  # Used in exercises/solutions for LCEL key extraction
 # LangChain is a framework for building LLM applications
-# Reference: https://python.langchain.com/docs/get_started/introduction
+# Reference: https://python.langchain.com/docs/get_started/introductioñ
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI  # OpenAI integrations
 from langchain_chroma import Chroma  # Vector database for similarity search
 from langchain_text_splitters import RecursiveCharacterTextSplitter  # Smart text chunking
