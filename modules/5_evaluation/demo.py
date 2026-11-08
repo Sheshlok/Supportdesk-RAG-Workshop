@@ -16,7 +16,7 @@ import os
 import numpy as np
 from openai import OpenAI
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from dotenv import load_dotenv
 
@@ -202,7 +202,8 @@ for idx, eval_query in enumerate(eval_queries, 1):
         metrics['question'] = query
         metrics['retrieved'] = retrieved_ids[:3]
         metrics['relevant'] = relevant_ids
-        
+
+        #print(metrics)
         retrieval_results.append(metrics)
     except Exception as e:
         print(f"\n  ⚠ Error on query {idx}: {str(e)[:50]}")

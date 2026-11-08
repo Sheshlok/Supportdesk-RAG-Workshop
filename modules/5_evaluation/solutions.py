@@ -143,6 +143,8 @@ print("\n" + "=" * 80)
 print("EXERCISE 2: Evaluate All Queries")
 print("=" * 80)
 
+# all_metrics is a list of dictionaries containing precision, recall, and F1 for each query
+# Each dictionary corresponds to the metrics for one query at the specified cutoff k
 all_metrics = []
 for query in eval_queries:
     docs = vector_store.similarity_search(query['question'], k=3)
