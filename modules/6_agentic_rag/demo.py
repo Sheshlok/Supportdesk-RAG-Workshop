@@ -186,7 +186,7 @@ response1 = run_agent(query1)
 print("\n" + "-" * 80)
 print("FINAL ANSWER:")
 print(response1)
-
+print("-" * 80)
 # ============================================================================
 # PART 3: Specific Lookup - Different Tool
 # ============================================================================
@@ -206,6 +206,7 @@ response2 = run_agent(query2)
 print("\n" + "-" * 80)
 print("FINAL ANSWER:")
 print(response2)
+print("-" * 80)
 
 # ============================================================================
 # PART 4: Category Filtering
@@ -226,6 +227,7 @@ response3 = run_agent(query3)
 print("\n" + "-" * 80)
 print("FINAL ANSWER:")
 print(response3)
+print("-" * 80)
 
 # ============================================================================
 # PART 5: Statistics Query
@@ -266,7 +268,7 @@ response5 = run_agent(query5)
 print("\n" + "-" * 80)
 print("FINAL ANSWER:")
 print(response5)
-
+print("-" * 80)
 # ============================================================================
 # PART 7: Conversational Agent with Memory
 # ============================================================================

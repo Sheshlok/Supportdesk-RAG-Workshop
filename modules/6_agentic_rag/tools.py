@@ -15,7 +15,7 @@ import os
 from typing import List, Dict, Any
 from langchain_core.tools import Tool
 from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_core.documents import Document
 
 
@@ -59,9 +59,9 @@ Priority: {ticket['priority']}"""
                 page_content=content,
                 metadata={
                     'ticket_id': ticket['ticket_id'],
+                    'title': ticket['title'],
                     'category': ticket['category'],
                     'priority': ticket['priority'],
-                    'title': ticket['title']
                 }
             )
             documents.append(doc)
